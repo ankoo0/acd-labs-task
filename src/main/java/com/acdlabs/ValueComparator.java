@@ -1,12 +1,13 @@
-package org.example;
+package com.acdlabs;
 
 import java.util.Comparator;
 
 public class ValueComparator implements Comparator<String> {
+
     @Override
     public int compare(String first, String second) {
         if (first.isEmpty() || second.isEmpty()) {
-            return  0;
+            return 0;
         }
 
         boolean isFirstNumber = isNumber(first);
@@ -15,12 +16,14 @@ public class ValueComparator implements Comparator<String> {
         if (isFirstNumber && isSecondNumber) {
             double num1 = Double.parseDouble(first);
             double num2 = Double.parseDouble(second);
+
             return Double.compare(num1, num2);
         } else if (!isFirstNumber && !isSecondNumber) {
+
             return first.compareTo(second);
         } else {
 
-            return isFirstNumber ? -1 :  1;
+            return isFirstNumber ? -1 : 1;
         }
     }
 
