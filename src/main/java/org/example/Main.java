@@ -1,6 +1,7 @@
 package org.example;
 
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -17,26 +18,27 @@ import static java.util.Arrays.stream;
 
 public class Main {
     public static void main(String[] args) throws URISyntaxException, IOException {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        URL in = classloader.getResource("in.txt");
+//        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+//        URL in = classloader.getResource("in.txt");
 
+        File file = new File("./in.txt");
+        if (!file.exists()) {
+            throw new FileNotFoundException("File not found in the directory.");
+        }
         Function<String, String[]> noRegexpTokenizer = new Tokenizer();
 //       List<String[]> list = Files.lines(Paths.get(in.toURI())).map(l->l.split("((?<=\\t)|(?=\\t))")).collect(Collectors.toList());
 
-        String[]s =Files.lines(Paths.get(in.toURI())).toArray(String[]::new);
+//        String[]s =Files.lines(file.toPath()).toArray(String[]::new);
 
-        String[][] array = Files.lines(Paths.get(in.toURI()))
+        String[][] array = Files.lines(file.toPath())
          .map(noRegexpTokenizer)
                 .toArray(String[][]::new);
 
 
         sort2DArrayBasedOnColumnNumber(array);
 
-
-        stream(array).forEach(arr-> System.out.println(Arrays.toString(arr)));
-
         List<String> er =  Arrays.stream(array).map(arr-> Arrays.stream(arr).collect(Collectors.joining(""))).collect(Collectors.toList());
-       er.forEach(System.out::println);
+
 
         try (FileWriter fileWriter = new FileWriter("out.txt")) {
             for (String str : er) {
